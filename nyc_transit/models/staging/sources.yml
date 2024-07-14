@@ -5,170 +5,405 @@ sources:
         columns:
           - name: tripduration
             data_type: varchar
+            description: "Duration of the trip in seconds."
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: starttime
             data_type: varchar
+            description: "The date and time when the trip started."
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: stoptime
             data_type: varchar
+            description: "The date and time when the trip ended."
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: start station id
             data_type: varchar
+            description: "Unique identifier for the starting station."
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: start station name
             data_type: varchar
+            description: "Name of the starting station."
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: start station latitude
             data_type: varchar
+            description: "Latitude of the starting station."
           - name: start station longitude
             data_type: varchar
+            description: "Longitude of the starting station."
           - name: end station id
             data_type: varchar
+            description: "Unique identifier for the ending station."
           - name: end station name
             data_type: varchar
+            description: "Name of the ending station."
           - name: end station latitude
             data_type: varchar
+            description: "Latitude of the ending station."
           - name: end station longitude
             data_type: varchar
+            description: "Longitude of the ending station."
           - name: bikeid
             data_type: varchar
+            description: "Unique identifier for the bike used."
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: usertype
             data_type: varchar
+            description: "Type of user (Customer = 24-hour pass or 3-day pass user; Subscriber = Annual Member)."
+            tests:
+              - accepted_values: 
+                  values: ['Subscriber', 'Customer']
+                  config:
+                    severity: warn
           - name: birth year
             data_type: varchar
+            description: "Year of birth of the user."
           - name: gender
             data_type: varchar
+            description: "Gender of the user (Zero=unknown; 1=male; 2=female)."
+            tests:
+              - not null
+              - accepted_values: 
+                  values: ['0', '1', '2']
           - name: ride_id
             data_type: varchar
+            description: "Unique identifier for the ride."
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: rideable_type
             data_type: varchar
+            description: "Type of the rideable (e.g., bike, e-scooter)."
           - name: started_at
             data_type: varchar
+            description: "Timestamp when the ride started."
           - name: ended_at
             data_type: varchar
+            description: "Timestamp when the ride ended."
           - name: start_station_name
             data_type: varchar
+            description: "Name of the station where the ride started."
           - name: start_station_id
             data_type: varchar
+            description: "Unique identifier for the station where the ride started."
           - name: end_station_name
             data_type: varchar
+            description: "Name of the station where the ride ended."
           - name: end_station_id
             data_type: varchar
+            description: "Unique identifier for the station where the ride ended."
           - name: start_lat
             data_type: varchar
+            description: "Latitude of the starting location."
           - name: start_lng
             data_type: varchar
+            description: "Longitude of the starting location."
           - name: end_lat
             data_type: varchar
+            description: "Latitude of the ending location."
           - name: end_lng
             data_type: varchar
+            description: "Longitude of the ending location."
           - name: member_casual
             data_type: varchar
+            description: "Indicates if the rider is a member or a casual rider."
           - name: filename
             data_type: varchar
+            description: "Name of the file from which the data was imported."
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
+
 
       - name: central_park_weather
         columns:
           - name: station
             data_type: varchar
+            description: "Unique identifier for the weather station."
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: name
             data_type: varchar
+            description: "Name of the weather station."
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: date
             data_type: varchar
+            description: "The date of the observation in the format YYYY-MM-DD."
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: awnd
             data_type: varchar
+            description: "Average daily wind speed."
           - name: prcp
             data_type: varchar
+            description: "The amount of precipitation for the day, in inches."
           - name: snow
             data_type: varchar
+            description: "The amount of snowfall for the day, in inches."
           - name: snwd
             data_type: varchar
+            description: "The measured snow depth on that day, in inches (missing before 1912)."
           - name: tmax
             data_type: varchar
+            description: "The maximum temperature for the day, in degrees Fahrenheit."
           - name: tmin
             data_type: varchar
+            description: "The minimum temperature for the day, in degrees Fahrenheit."
           - name: filename
             data_type: varchar
+            description: "Name of the file from which the data was imported."
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
 
       - name: fhv_bases
         columns:
           - name: base_number
             data_type: varchar
+            description: "The TLC license number of the dispatching base"
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: base_name
             data_type: varchar
+            description: "The official name of the base entity"
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: dba
             data_type: varchar
+            description: "The 'doing business as' name of the base"
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: dba_category
             data_type: varchar
+            description: "The category of the base"
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: filename
             data_type: varchar
+            description: "The name of the file the data is being imported from"
+            tests:
+              - dbt_expectations.expect_column_to_exist
 
       - name: fhv_tripdata
         columns:
           - name: dispatching_base_num
             data_type: varchar
+            description: "The TLC Base License Number of the base that dispatched the trip"
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: pickup_datetime
             data_type: timestamp
+            description: "The date and time of the trip pick-up"
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: dropoff_datetime
             data_type: timestamp
+            description: "The date and time of the trip dropoff"
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: pulocationid
             data_type: double
+            description: "TLC Taxi Zone in which the trip began"
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: dolocationid
             data_type: double
+            description: "TLC Taxi Zone in which the trip ended"
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: sr_flag
             data_type: integer
+            description: "Indicates if the trip was a part of a shared ride chain offered by a
+                          High Volume FHV company (e.g. Uber Pool, Lyft Line). For shared
+                          trips, the value is 1. For non-shared rides, this field is null"
+            tests:
+              - accepted_values: 
+                  values: ['Y', 'N']
+                  config:
+                    severity: warn
           - name: affiliated_base_number
             data_type: varchar
+            description: "base number of the base with which the vehicle is affiliated"
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: filename
             data_type: varchar
+            description: "The name of the file the data is being imported from"
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
 
       - name: fhvhv_tripdata
         columns:
           - name: hvfhs_license_num
             data_type: varchar
+            description: "The TLC license number of the HVFHS base or business
+                          As of September 2019, the HVFHS licensees are the following:
+                          • HV0002: Juno
+                          • HV0003: Uber
+                          • HV0004: Via
+                          • HV0005: Lyft"
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: dispatching_base_num
-            data_type: varchar
+            data_type: varchar  
+            description: "The TLC Base License Number of the base that dispatched the trip"
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
+              - relationships:
+                  to: source('main', 'fhv_bases')
+                  field: base_number
           - name: originating_base_num
             data_type: varchar
+            description: "base number of the base that received the original trip request"
+            tests:
+              - dbt_expectations.expect_column_to_exist
+              - relationships:
+                  to: source('main', 'fhv_bases')
+                  field: base_number
           - name: request_datetime
             data_type: timestamp
+            description: "date/time when passenger requested to be picked up"
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: on_scene_datetime
             data_type: timestamp
+            description: "date/time when driver arrived at the pick-up location (Accessible
+                          Vehicles-only)"
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: pickup_datetime
             data_type: timestamp
+            description: "The date and time of the trip pick-up"
+            tests: 
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: dropoff_datetime
             data_type: timestamp
+            description: "The date and time of the trip drop-of"
+            tests:
+              - not null
+              - dbt_expectations.expect_column_to_exist
           - name: pulocationid
             data_type: bigint
+            description: "TLC Taxi Zone in which the trip began"
           - name: dolocationid
             data_type: bigint
+            description: "TLC Taxi Zone in which the trip ended"
           - name: trip_miles
             data_type: double
+            description: "total miles for passenger trip"
+            tests:
+              - dbt_expectations.expect_column_values_to_be_between:
+                  min_value: 0
+                  max_value: 10000
           - name: trip_time
             data_type: bigint
+            description: "total time in seconds for passenger trip"
+            tests:
+              - dbt_expectations.expect_column_values_to_be_between:
+                  min_value: 0
+                  max_value: 86400 # maximum a day
           - name: base_passenger_fare
             data_type: double
+            description: "base passenger fare before tolls, tips, taxes, and fees"
+            tests:
+              - dbt_expectations.expect_column_values_to_be_between:
+                  min_value: 0
           - name: tolls
             data_type: double
+            description: "total amount of all tolls paid in trip"
+            tests:
+              - dbt_expectations.expect_column_values_to_be_between:
+                  min_value: 0
           - name: bcf
             data_type: double
+            description: "total amount collected in trip for Black Car Fund"
           - name: sales_tax
             data_type: double
+            description: "total amount collected in trip for NYS sales tax"
           - name: congestion_surcharge
             data_type: double
+            description: "total amount collected in trip for NYS congestion surcharge"
           - name: airport_fee
             data_type: double
+            description: "$2.50 for both drop off and pick up at LaGuardia, Newark, and John
+                          F. Kennedy airports"
           - name: tips
             data_type: double
+            description: "total amount of tips received from passenger"
+            tests:
+              - dbt_expectations.expect_column_values_to_be_between:
+                  min_value: 0
           - name: driver_pay
             data_type: double
+            description: "total driver pay (not including tolls or tips and net of commission, surcharges, or taxes)"
           - name: shared_request_flag
             data_type: varchar
+            description: "Did the passenger agree to a shared/pooled ride, regardless of
+                          whether they were matched? (Y/N)"
+            tests:
+                - accepted_values: 
+                    values: ['Y', 'N']
+                    config:
+                      severity: warn
           - name: shared_match_flag
             data_type: varchar
+            description: "Did the passenger share the vehicle with another passenger who
+                          booked separately at any point during the trip? (Y/N)"
           - name: access_a_ride_flag
             data_type: varchar
+            description: "Was the trip administered on behalf of the Metropolitan
+                          Transportation Authority (MTA)? (Y/N)"
+            tests:
+              - accepted_values: 
+                  values: ['Y', 'N']
+                  config:
+                    severity: warn
           - name: wav_request_flag
             data_type: varchar
+            description: "Did the passenger request a wheelchair-accessible vehicle (WAV)?(Y/N)"
+            tests:
+              - accepted_values: 
+                  values: ['Y', 'N']
+                  config:
+                    severity: warn
           - name: wav_match_flag
             data_type: varchar
+            description: "Did the trip occur in a wheelchair-accessible vehicle (WAV)? (Y/N)"
+            tests:
+              - accepted_values: 
+                  values: ['Y', 'N']
+                  config:
+                    severity: warn
           - name: filename
             data_type: varchar
+            description: "The name of the file the data is being imported from"
+            tests: 
+              - not null
+              - dbt_expectations.expect_column_to_exist
 
       - name: green_tripdata
         columns:
