@@ -233,11 +233,6 @@ sources:
             description: "Indicates if the trip was a part of a shared ride chain offered by a
                           High Volume FHV company (e.g. Uber Pool, Lyft Line). For shared
                           trips, the value is 1. For non-shared rides, this field is null"
-            tests:
-              - accepted_values: 
-                  values: ['Y', 'N']
-                  config:
-                    severity: warn
           - name: affiliated_base_number
             data_type: varchar
             description: "base number of the base with which the vehicle is affiliated"
