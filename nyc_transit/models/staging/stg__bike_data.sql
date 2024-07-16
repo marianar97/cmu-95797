@@ -7,7 +7,7 @@ with source as (
 renamed as (
 
     select
-        tripduration,
+        tripduration::int as tripduration,
         starttime,
         stoptime,
         "start station id",
@@ -55,3 +55,4 @@ select
 	coalesce("end station longitude", end_lng)::double as end_lng,
 	filename
 from renamed
+WHERE tripduration >= 0 --drop records where tripduration < 0
