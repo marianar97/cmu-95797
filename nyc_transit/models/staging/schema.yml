@@ -8,6 +8,7 @@ models:
         data_type: timestamp
         description: "Timestamp when the ride started."
         tests:
+          - not_null
           - dbt_expectations.expect_column_to_exist
 
       - name: ended_at_ts
@@ -20,9 +21,13 @@ models:
         data_type: bigint
         description: "Duration of the trip in seconds."
         tests:
+          - not_null
           - dbt_expectations.expect_column_to_exist
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
+              max_value: 86400 #1 day
+              config:
+                severity: warn
 
       - name: start_station_id
         data_type: varchar
@@ -40,13 +45,21 @@ models:
         data_type: double
         description: "Latitude of the starting station."
         tests:
+          - not_null
           - dbt_expectations.expect_column_to_exist
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: -90.0
+              max_value: 90.0
 
       - name: start_lng
         data_type: double
         description: "Longitude of the starting station."
         tests:
+          - not_null
           - dbt_expectations.expect_column_to_exist
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: -180.0
+              max_value: 180.0
 
       - name: end_station_id
         data_type: varchar
@@ -70,7 +83,11 @@ models:
         data_type: double
         description: "Longitude of the ending station."
         tests:
+          - not_null
           - dbt_expectations.expect_column_to_exist
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: -180.0
+              max_value: 180.0
 
       - name: filename
         data_type: varchar
@@ -85,6 +102,7 @@ models:
         data_type: date
         description: "The date of the observation in the format YYYY-MM-DD."
         tests:
+          - not_null
           - dbt_expectations.expect_column_to_exist
 
       - name: awnd
@@ -115,6 +133,7 @@ models:
         data_type: double
         description: "The measured snow depth on that day, in inches (missing before 1912)."
         tests:
+          - not_null
           - dbt_expectations.expect_column_to_exist
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
@@ -123,15 +142,21 @@ models:
         data_type: integer
         description: "The maximum temperature for the day, in degrees Fahrenheit."
         tests:
+          - not_null
           - dbt_expectations.expect_column_to_exist
           - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
+              min_value: -40
+              max_value: 122
 
       - name: tmin
         data_type: integer
         description: "The minimum temperature for the day, in degrees Fahrenheit."
         tests:
+          - not_null
           - dbt_expectations.expect_column_to_exist
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: -40
+              max_value: 122
 
       - name: filename
         data_type: varchar
@@ -180,6 +205,7 @@ models:
         description: "The TLC Base License Number of the base that dispatched the trip."
         tests:
           - dbt_expectations.expect_column_to_exist
+          
 
       - name: pickup_datetime
         data_type: timestamp
@@ -224,6 +250,9 @@ models:
         data_type: varchar
         description: "The TLC license number of the HVFHS base or business."
         tests:
+          - relationships:
+              to: source('staging', 'fhv_bases')
+              field: base_number
           - dbt_expectations.expect_column_to_exist
 
       - name: dispatching_base_num
@@ -340,6 +369,7 @@ models:
         data_type: boolean
         description: "Did the passenger agree to a shared/pooled ride, regardless of whether they were matched? (Y/N)"
         tests:
+          - not_null
           - accepted_values:
               values: ['Y', 'N']
               config:
@@ -367,6 +397,7 @@ models:
         data_type: boolean
         description: "Did the passenger request a wheelchair-accessible vehicle (WAV)? (Y/N)"
         tests:
+          - not_null
           - accepted_values:
               values: ['Y', 'N']
               config:
